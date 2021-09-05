@@ -6,6 +6,10 @@ import { config } from './config';
 import { DatabaseConfig } from './databse.config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
+import { Transaction } from './transactions/entities/transaction.entity';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -13,10 +17,12 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
       load: [config],
     }),
-        TypeOrmModule.forRootAsync({
-          imports: [ConfigModule],
-          useClass: DatabaseConfig
-        }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: DatabaseConfig
+      }),
+
+    TypeOrmModule.forFeature([User, Transaction]),
 
     TransactionsModule,
 
@@ -24,5 +30,7 @@ import { UsersModule } from './users/users.module';
 
     UsersModule,
   ],
+  controllers: [AppController],
+  providers: [AppService]
 })
 export class AppModule {}

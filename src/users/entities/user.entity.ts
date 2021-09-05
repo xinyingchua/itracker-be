@@ -1,5 +1,6 @@
-import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt'
+import { Transaction } from "src/transactions/entities/transaction.entity";
 
 @Entity({name: 'users'})
 export class User extends BaseEntity{
@@ -26,6 +27,8 @@ export class User extends BaseEntity{
     @UpdateDateColumn()
     updatedAr: Date;
 
+    @OneToMany(type => Transaction, transactions => transactions.user, {onUpdate: 'CASCADE', eager: true})
+    transactions: Transaction[]
 
     @BeforeInsert()
     async setPassword(password: string) {

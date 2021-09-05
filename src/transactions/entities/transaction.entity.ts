@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Transaction {
@@ -8,5 +9,7 @@ export class Transaction {
     @Column()
     title: string
 
-
+    @ManyToOne(() => User, user => user.transactions, {onDelete: 'NO ACTION'})
+    // @JoinColumn({ })
+    user: User
 }

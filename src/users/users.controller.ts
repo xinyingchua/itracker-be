@@ -21,10 +21,10 @@ export class UsersController {
   //   return this.usersService.create(createUserDto);
   // }
 
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
+  @Get()
+  async findAll() {
+    return await this.userService.findAll();
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
