@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpStatus, BadRequestException, Res, Req, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpStatus, BadRequestException, Res, Req, UnauthorizedException, UsePipes } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -16,6 +16,7 @@ export class UsersController {
     ) {}
 
   @Post('/register')
+  @UsePipes(ValidationPipe)
   async registerNewUser(
     @Body(SETTINGS.VALIDATION_PIPE) userRegister: CreateUserDto): Promise<User> {
     console.log(userRegister)
@@ -72,18 +73,19 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.userService.findOne(+id);
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    return await this.userService.findAll();
   }
   
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @UsePipes(ValidationPipe)
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return await this.userService.update(+id, updateUserDto);
   }
 
   // @Delete(':id')
