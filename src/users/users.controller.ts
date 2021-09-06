@@ -7,7 +7,6 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import {Response, Request} from 'express'
-import { PassThrough } from 'stream';
 
 @Controller('users')
 export class UsersController {
@@ -72,20 +71,23 @@ export class UsersController {
     }
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
+  }
+
+  @Get()
+  findAll() {
+    return this.userService.findAll();
+  }
   
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+id, updateUserDto);
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
+  //   return this.userService.remove(+id);
   // }
 }

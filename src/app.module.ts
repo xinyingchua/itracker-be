@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionsModule } from './transactions/transactions.module';
 import { config } from './config';
 import { DatabaseConfig } from './databse.config';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { Transaction } from './transactions/entities/transaction.entity';
@@ -25,8 +24,6 @@ import { AppService } from './app.service';
     TypeOrmModule.forFeature([User, Transaction]),
 
     TransactionsModule,
-
-    AuthModule,
 
     UsersModule,
   ],

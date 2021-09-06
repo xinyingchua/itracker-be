@@ -4,8 +4,6 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt'
-
 
 @Injectable()
 export class UsersService {
@@ -27,15 +25,22 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userRepositiory.find()
   }
 
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepositiory.findOne(id)
+    user.firstName = updateUserDto.firstName,
+    user.lastName = updateUserDto.lastName,
+    user.contact = updateUserDto.contact,
+    user.image = updateUserDto.image
+
+    return this.userRepositiory.save(user)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  // async remove(id: number) {
+  //   const user = await this.userRepositiory.findOne(id)
+  //   return this.userRepositiory.remove(user)
+  // }
 }

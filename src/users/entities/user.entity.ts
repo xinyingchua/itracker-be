@@ -21,6 +21,12 @@ export class User extends BaseEntity{
     @Column()
     password: string;
 
+    @Column({nullable: true})
+    image: string;
+
+    @Column({nullable: true})
+    contact: number;
+
     @CreateDateColumn()
     createdAt:Date;
 
