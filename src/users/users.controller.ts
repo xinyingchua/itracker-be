@@ -1,13 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpStatus, BadRequestException, Res, Req, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SETTINGS } from 'src/app.utils';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt'
+import { JwtService } from '@nestjs/jwt';
+import {Response, Request} from 'express'
+import { PassThrough } from 'stream';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private jwtService: JwtService
+    ) {}
 
   @Post('/register')
   async registerNewUser(
@@ -17,14 +24,55 @@ export class UsersController {
 
   }
   
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto);
-  // }
+  @Post('/login')
+  async userLogin(
+    @Body('email') email: string,
+    @Body('password') password: string,
+    @Res({passthrough: true}) response: Response
+    ) {
+      const user = await this.userService.findOne({email});
+      if(!user) {
+        throw new BadRequestException('Invalid credentials')
+      }
+      if(!await bcrypt.compare(password, user.password)) {
+        throw new BadRequestException('Invalid credentials')
+      }
+      const jwt = await this.jwtService.signAsync({id: user.id})
+      response.cookie('jwt', jwt, {httpOnly: true})
+      return {
+        message: 'sucess'
+      }
+      
+    }
 
-  @Get()
-  async findAll() {
-    return await this.userService.findAll();
+
+  @Get('/login')
+  async user(@Req() request: Request) {
+    try {
+      const cookie = request.cookies['jwt']
+      const data = await this.jwtService.verifyAsync(cookie)
+      if(!data) {
+        throw new UnauthorizedException()
+      }
+
+      const user = await this.userService.findOne(data['id'])
+      return user;
+
+    } catch(err) {
+      throw new UnauthorizedException()
+    }
   }
+
+  @Post('/logout')
+  async logout(@Res({passthrough: true}) response: Response) {
+    response.clearCookie('jwt');
+
+    return {
+      message: 'Logged out sucessfully'
+    }
+  }
+
+  
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
