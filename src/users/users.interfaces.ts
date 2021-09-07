@@ -1,5 +1,7 @@
 export interface UserToken {
     id: number;
     firstName: string;
-    // put aet/ etc
+    iat: number;
+    exp: number;
+    // put iat/ exp
 }

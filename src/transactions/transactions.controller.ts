@@ -20,7 +20,7 @@ export class TransactionsController {
     @Body() createTransactionDto: CreateTransactionDto, 
     @Req () request: ExpressRequest, 
   ) {
-    console.log(request.cookies)
+    // console.log(request.cookies)
     // extract cookie and convert back to user
     const cookies: ApplicationCookies = request.cookies; 
     const user = this.jwtService.decode(cookies.jwt) as UserToken // decode returns 3 different types // RHS: force into a type TypeCoersion // LHS: that variable is of a type equivalent on the RHS
