@@ -10,6 +10,9 @@ export class Transaction {
     title: string
 
     @ManyToOne(() => User, user => user.transactions, {onDelete: 'NO ACTION'})
-    // @JoinColumn({ })
+    @JoinColumn({ name: 'userId' })
     user: User
+
+    @Column()
+    userId: number
 }

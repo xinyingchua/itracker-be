@@ -14,7 +14,8 @@ export class TransactionsService {
   }
   create(createTransactionDto: CreateTransactionDto) {
     const newTransaction = this.transactionRepository.create(createTransactionDto);
-
+    console.log(createTransactionDto)
+    console.log(newTransaction)
     return this.transactionRepository.save(newTransaction)
   }
 

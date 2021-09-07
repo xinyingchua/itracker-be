@@ -37,14 +37,16 @@ export class UsersController {
       if(!await bcrypt.compare(password, user.password)) {
         throw new BadRequestException('Invalid credentials')
       }
-      const jwt = await this.jwtService.signAsync({id: user.id})
+      const jwt = await this.jwtService.signAsync({id: user.id, firstName: user.firstName})
       response.cookie('jwt', jwt, {httpOnly: true})
       return {
-        message: 'sucess'
+        message: 'success'
       }
       
     }
 
+    // add authguard 
+    // if user no token --> should not be able to post
 
   @Get('/login')
   async user(@Req() request: Request) {
