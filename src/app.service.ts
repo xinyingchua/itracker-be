@@ -22,9 +22,9 @@ export class AppService {
     await this.userRepository.save(employee);
     // create transactions for employee
 
-    const task1 = this.transactionRepository.create({title: 'hello'});
+    const task1 = this.transactionRepository.create({desc: 'oil'});
     await this.transactionRepository.save(task1)
-    const task2 = this.transactionRepository.create({title: 'lipstick'});
+    const task2 = this.transactionRepository.create({desc: 'lipstick'});
     await this.transactionRepository.save(task2)
     employee.transactions = [task1, task2]
     await this.userRepository.save(employee)

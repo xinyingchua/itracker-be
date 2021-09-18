@@ -27,7 +27,7 @@ export class TransactionsController {
     createTransactionDto.userId = user.id
     // need to verify cookies again to throw error if user do not have cookie
     // check jwt error message --> if not OK to change 
-    // console.log(user)
+    console.log(user)
     return await this.transactionsService.create(createTransactionDto);
   }
 

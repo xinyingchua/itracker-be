@@ -9,6 +9,8 @@ import { User } from './users/entities/user.entity';
 import { Transaction } from './transactions/entities/transaction.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/product.entity';
 
 @Module({
   imports: [
@@ -21,11 +23,13 @@ import { AppService } from './app.service';
       useClass: DatabaseConfig
       }),
 
-    TypeOrmModule.forFeature([User, Transaction]),
+    TypeOrmModule.forFeature([User, Transaction, Product]),
 
     TransactionsModule,
 
     UsersModule,
+
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService]

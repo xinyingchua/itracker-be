@@ -7,7 +7,10 @@ export class Transaction {
     id: number;
 
     @Column()
-    title: string
+    desc: string
+
+    @Column()
+    qty: number
 
     @ManyToOne(() => User, user => user.transactions, {onDelete: 'NO ACTION'})
     @JoinColumn({ name: 'userId' })
@@ -15,4 +18,6 @@ export class Transaction {
 
     @Column()
     userId: number
+
+    
 }

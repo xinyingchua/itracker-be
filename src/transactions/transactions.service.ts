@@ -29,7 +29,7 @@ export class TransactionsService {
 
   async update(id: number, updateTransactionDto: UpdateTransactionDto) {
     const transaction = await this.transactionRepository.findOne(id)
-    transaction.title = updateTransactionDto.title
+    transaction.desc = updateTransactionDto.desc
 
     return this.transactionRepository.save(transaction)
   }
