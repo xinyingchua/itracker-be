@@ -6,6 +6,7 @@ import { Request as ExpressRequest} from 'express'
 import { ApplicationCookies } from './transactions.interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from 'src/users/users.interfaces';
+import cookieParser from 'cookie-parser';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -27,7 +28,7 @@ export class TransactionsController {
     createTransactionDto.userId = user.id
     // need to verify cookies again to throw error if user do not have cookie
     // check jwt error message --> if not OK to change 
-    console.log(user)
+    console.log(1)
     return await this.transactionsService.create(createTransactionDto);
   }
 

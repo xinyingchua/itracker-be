@@ -11,6 +11,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { Cloudinary } from './cloudinary';
+import { CloudinaryService } from './cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -30,8 +33,10 @@ import { Product } from './products/entities/product.entity';
     UsersModule,
 
     ProductsModule,
+
+    CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService, Cloudinary, CloudinaryService]
 })
 export class AppModule {}

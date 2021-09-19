@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv'
+import { CloudinaryService } from '../cloudinary/cloudinary.service'
+
 dotenv.config()
 
 @Module({
@@ -15,6 +17,6 @@ dotenv.config()
   })
 ],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService, CloudinaryService]
 })
 export class UsersModule {}
