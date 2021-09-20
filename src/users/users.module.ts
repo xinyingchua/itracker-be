@@ -17,6 +17,7 @@ dotenv.config()
   })
 ],
   controllers: [UsersController],
-  providers: [UsersService, CloudinaryService]
+  providers: [UsersService, CloudinaryService],
+  exports: [UsersService]
 })
 export class UsersModule {}

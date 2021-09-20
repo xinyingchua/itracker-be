@@ -6,7 +6,6 @@ import { Request as ExpressRequest} from 'express'
 import { ApplicationCookies } from './transactions.interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from 'src/users/users.interfaces';
-import cookieParser from 'cookie-parser';
 
 @Controller('transactions')
 export class TransactionsController {

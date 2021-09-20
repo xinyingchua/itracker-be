@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpStatus, BadRequestException, Res, Req, UnauthorizedException, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, HttpStatus, BadRequestException, Res, Req, UnauthorizedException, UsePipes, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import {Response, Request} from 'express'
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -24,6 +25,7 @@ export class UsersController {
 
   }
   
+// @UseGuards(LocalAuthGuard)
   @Post('/login')
   async userLogin(
     @Body('email') email: string,

@@ -14,6 +14,8 @@ import { Product } from './products/entities/product.entity';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { Cloudinary } from './cloudinary';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { CloudinaryService } from './cloudinary/cloudinary.service';
     ProductsModule,
 
     CloudinaryModule,
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, Cloudinary, CloudinaryService]
