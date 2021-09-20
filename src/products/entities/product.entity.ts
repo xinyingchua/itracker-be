@@ -11,7 +11,7 @@ export class Product {
     desc: string
 
     @Column()
-    franchise: string
+    axis: string
 
     @Column()
     target: number
@@ -19,6 +19,9 @@ export class Product {
     
     @Column()
     price: number
+
+    @Column()
+    image: string
 
     @ManyToMany(type => Transaction, transactions => transactions.user, {onUpdate: 'CASCADE', eager: true})
     transactions: Transaction[]

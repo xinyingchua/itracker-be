@@ -12,6 +12,9 @@ export class Transaction {
     @Column()
     qty: number
 
+    @Column()
+    price: number
+
     @ManyToOne(() => User, user => user.transactions, {onDelete: 'NO ACTION'})
     @JoinColumn({ name: 'userId' })
     user: User

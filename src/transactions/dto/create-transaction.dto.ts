@@ -8,6 +8,10 @@ export class CreateTransactionDto {
     @Min(1)
     qty: number
 
+    @IsInt()
+    @Min(1)
+    price: number
+
     userId?: number // can be undefined/ optional
     
 }

@@ -50,7 +50,20 @@ export class TransactionsController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(
+    @Req () request: ExpressRequest
+  ) {
+    const headers = request.headers as IncomingHttpHeaders & {auth_token ?: string} 
+    if(!headers ?.auth_token) {
+      throw new BadRequestException(
+        "No user auth token found"
+      )
+    }
+    const token = headers.auth_token
+
+    const user = this.jwtService.decode(token) as UserToken 
+    console.log(user.id)
+
     return await this.transactionsService.findAll();
   }
 
