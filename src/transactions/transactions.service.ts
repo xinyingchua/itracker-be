@@ -12,7 +12,7 @@ export class TransactionsService {
   ) {
 
   }
-  async create(createTransactionDto: CreateTransactionDto) {
+  async create(createTransactionDto: CreateTransactionDto[]) {
     const newTransaction = await this.transactionRepository.create(createTransactionDto);
     console.log(createTransactionDto)
     console.log(newTransaction)

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Req, ParseArrayPipe, BadRequestException } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
@@ -6,6 +6,7 @@ import { Request as ExpressRequest} from 'express'
 import { ApplicationCookies } from './transactions.interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from 'src/users/users.interfaces';
+import { IncomingHttpHeaders } from 'http';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -15,20 +16,37 @@ export class TransactionsController {
     ) {}
 
   @Post()
-  @UsePipes(ValidationPipe)
+  @UsePipes(new ParseArrayPipe ({items: CreateTransactionDto}))
   async create(
-    @Body() createTransactionDto: CreateTransactionDto, 
+    @Body() payload: CreateTransactionDto[], 
     @Req () request: ExpressRequest, 
   ) {
     // console.log(request.cookies)
     // extract cookie and convert back to user
-    const cookies: ApplicationCookies = request.cookies; 
-    const user = this.jwtService.decode(cookies.jwt) as UserToken // decode returns 3 different types // RHS: force into a type TypeCoersion // LHS: that variable is of a type equivalent on the RHS
-    createTransactionDto.userId = user.id
+
+    // const cookies: ApplicationCookies = request.cookies; 
+    const headers = request.headers as IncomingHttpHeaders & {auth_token ?: string} 
+    if(!headers ?.auth_token) {
+      throw new BadRequestException(
+        "No user auth token found"
+      )
+    }
+    const token = headers.auth_token
+
+    const user = this.jwtService.decode(token) as UserToken 
+
+    // BASIC: from line 29 - 36 -> can put in a function (helper)
+    // ADVANCE: create own pipe using decorators
+
+    // const user = this.jwtService.decode(cookies.jwt) as UserToken // decode returns 3 different types // RHS: force into a type TypeCoersion // LHS: that variable is of a type equivalent on the RHS
+    console.log(user)
+    payload.forEach((dto) => 
+      dto.userId = user.id
+    )
     // need to verify cookies again to throw error if user do not have cookie
     // check jwt error message --> if not OK to change 
     console.log(1)
-    return await this.transactionsService.create(createTransactionDto);
+    return await this.transactionsService.create(payload);
   }
 
   @Get()
@@ -39,6 +57,7 @@ export class TransactionsController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.transactionsService.findOne(+id);
+  
   }
 
   @Patch(':id')
