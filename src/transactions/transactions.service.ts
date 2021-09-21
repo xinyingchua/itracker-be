@@ -19,8 +19,8 @@ export class TransactionsService {
     return this.transactionRepository.save(newTransaction)
   }
 
-  findAll() {
-    return this.transactionRepository.find();
+  findAll(userId: number) {
+    return this.transactionRepository.find({where : {userId: userId}});
   }
 
   findOne(id: number) {

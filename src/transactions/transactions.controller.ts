@@ -62,9 +62,9 @@ export class TransactionsController {
     const token = headers.auth_token
 
     const user = this.jwtService.decode(token) as UserToken 
-    console.log(user.id)
+    const userId =  user.id
 
-    return await this.transactionsService.findAll();
+    return await this.transactionsService.findAll(userId);
   }
 
   @Get(':id')

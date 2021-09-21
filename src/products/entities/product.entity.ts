@@ -23,7 +23,7 @@ export class Product {
     @Column()
     image: string
 
-    @ManyToMany(type => Transaction, transactions => transactions.user, {onUpdate: 'CASCADE', eager: true})
-    transactions: Transaction[]
+    // @ManyToMany(type => Transaction, transactions => transactions.user, {onUpdate: 'CASCADE', eager: true})
+    // transactions: Transaction[]
 
 }

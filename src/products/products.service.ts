@@ -16,7 +16,8 @@ export class ProductsService {
   }
 
   findAll() {
-    return `This action returns all products`;
+    console.log(this.productRespository)
+    return this.productRespository.find();
   }
 
   findOne(id: number) {
