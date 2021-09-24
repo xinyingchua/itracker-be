@@ -73,6 +73,14 @@ export class TransactionsController {
   
   }
 
+  @Get('leaderboard')
+  async findLeaderBoard(): Promise<any> {
+    
+    console.log("test")
+ 
+    return await this.transactionsService.findLeaderBoard();
+  }
+
   @Patch(':id')
   @UsePipes(ValidationPipe)
   async update(@Param('id') id: string, @Body() updateTransactionDto: UpdateTransactionDto) {

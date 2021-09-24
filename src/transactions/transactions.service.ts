@@ -19,13 +19,40 @@ export class TransactionsService {
     return this.transactionRepository.save(newTransaction)
   }
 
-  findAll(userId: number) {
-    return this.transactionRepository.find({where : {userId: userId}});
+  async findAll(userId: number) {
+    return await this.transactionRepository.find({where : {userId: userId}});
   }
 
   findOne(id: number) {
     return this.transactionRepository.findOne(id)
   }
+
+  async findLeaderBoard(): Promise<any> {
+
+    const countData = await this.transactionRepository.query(
+      `SELECT userId, SUM(qty) as sales, users.firstName, users.lastName, users.image
+      FROM itracker.transaction
+      LEFT JOIN itracker.users as users on userId = users.id
+      GROUP BY (userId)
+      ORDER BY (sales) DESC
+      LIMIT 4`
+    )
+    console.log("hello")
+    console.log({countData})
+
+    
+    return countData
+    // return ("hello")
+    // return this.transactionRepository.find()
+    // return this.transactionRepository.findOne(id)
+  }
+
+  // `SELECT userId, SUM(qty) as sales, users.firstName, users.lastName, users.image
+  //     FROM itracker.transaction
+	// 	LEFT JOIN itracker.users as users on userId = users.id
+  //     GROUP BY (userId)
+	//  ORDER BY (sales) DESC
+  //    LIMIT 4`
 
   async update(id: number, updateTransactionDto: UpdateTransactionDto) {
     const transaction = await this.transactionRepository.findOne(id)
