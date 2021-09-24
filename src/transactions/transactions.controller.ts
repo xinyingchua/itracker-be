@@ -67,19 +67,27 @@ export class TransactionsController {
     return await this.transactionsService.findAll(userId);
   }
 
+  @Get('leaderboard')
+  async findLeaderBoard(
+    @Req () request: ExpressRequest
+  ): Promise<any> {
+    const headers = request.headers as IncomingHttpHeaders & {auth_token ?: string} 
+    if(!headers ?.auth_token) {
+      throw new BadRequestException(
+        "No user auth token found"
+      )
+    }
+    const token = headers.auth_token
+
+    return await this.transactionsService.findLeaderBoard();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.transactionsService.findOne(+id);
   
   }
 
-  @Get('leaderboard')
-  async findLeaderBoard(): Promise<any> {
-    
-    console.log("test")
- 
-    return await this.transactionsService.findLeaderBoard();
-  }
 
   @Patch(':id')
   @UsePipes(ValidationPipe)
